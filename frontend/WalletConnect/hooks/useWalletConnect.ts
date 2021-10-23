@@ -8,7 +8,7 @@ export type useWalletConnectResult = {
   readonly connected: boolean;
 };
 
-export default function useWalletConnect(): WalletConnect  {
+export default function useWalletConnect(): WalletConnect {
   const { connector } = useWalletConnectContext();
   return React.useMemo((): WalletConnect => {
     if (connector) {

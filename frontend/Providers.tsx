@@ -45,7 +45,7 @@ const walletConnectOptions: WalletConnectProviderProps = {
     ],
   },
   // Uncomment to show a QR-code to connect a wallet
-  //renderQrcodeModal: Qrcode,
+  renderQrcodeModal: Qrcode,
 };
 
 export const Providers = ({ children }: ProvidersProps) => {

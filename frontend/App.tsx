@@ -7,7 +7,6 @@ import {
 } from "react-moralis";
 import { useWalletConnect } from "./WalletConnect";
 import { Button, Header, Icon } from "react-native-elements";
-// import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import Moralis from "moralis/types";
 
@@ -18,18 +17,18 @@ const styles = StyleSheet.create({
   white: { backgroundColor: "white" },
   margin: { marginBottom: 20 },
   marginLarge: { marginBottom: 35 },
+  weightHeavey: { fontWeight: "700" },
 });
 
 function Web3ApiExample(): JSX.Element {
-  const { Moralis } = useMoralis();
+  const { Moralis, user } = useMoralis();
+  const chainNAme = "eth";
   const {
-    account: { getTokenBalances },
+    account: { getNativeBalance },
   } = useMoralisWeb3Api();
-  const { data, isFetching, error } = useMoralisWeb3ApiCall(getTokenBalances);
 
-  useEffect(() => {
-    Moralis.Web3API.account.getTokenBalances({ address: "" }).then(console.log);
-  }, []);
+  //defaults to eth chain and user logged in address, if you want custom, you can pass in the options argument
+  const { data, isFetching, error } = useMoralisWeb3ApiCall(getNativeBalance);
 
   if (isFetching) {
     return (
@@ -50,8 +49,12 @@ function Web3ApiExample(): JSX.Element {
 
   return (
     <View style={styles.marginLarge}>
-      <Text>Tokens</Text>
-      <Text>{JSON.stringify(data)}</Text>
+      <Text style={styles.weightHeavey}>Native balance</Text>
+
+      <Text>
+        {/* @ts-ignore */}
+        {data ? data.balance / ("1e" + "18") : "none"}
+      </Text>
     </View>
   );
 }
@@ -61,9 +64,13 @@ function UserExample(): JSX.Element {
 
   return (
     <View style={styles.marginLarge}>
-      <Text>UserName: {user.getUsername()}</Text>
-      <Text>Email: {user.getEmail() ?? "-"}</Text>
-      <Text>Address: {user.get("ethAddress")}</Text>
+      <Text style={styles.weightHeavey}>UserName: {user.getUsername()}</Text>
+      <Text style={styles.weightHeavey}>
+        User Email: {user.getEmail() ?? "-"}
+      </Text>
+      <Text style={styles.weightHeavey}>
+        User Address: {user.get("ethAddress")}
+      </Text>
     </View>
   );
 }
@@ -111,7 +118,6 @@ function App(): JSX.Element {
             <Text style={styles.margin}>Authenticating...</Text>
           )}
           {!isAuthenticated && (
-            // @ts-ignore
             <Button
               buttonStyle={{ width: 200, backgroundColor: "green" }}
               containerStyle={{ margin: 5 }}
@@ -124,9 +130,17 @@ function App(): JSX.Element {
               title="Authenticate With Crypto Wallet"></Button>
           )}
           {isAuthenticated && (
-            <TouchableOpacity onPress={() => logout()}>
-              <Text>Logout</Text>
-            </TouchableOpacity>
+            <>
+              <Button
+                buttonStyle={{ width: 200, backgroundColor: "red" }}
+                containerStyle={{ margin: 5 }}
+                disabledStyle={{
+                  borderWidth: 2,
+                  borderColor: "#00F",
+                }}
+                onPress={() => logout()}
+                title="Logout"></Button>
+            </>
           )}
         </View>
         {isAuthenticated && (

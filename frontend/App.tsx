@@ -6,10 +6,15 @@ import {
   useMoralisWeb3ApiCall,
 } from "react-moralis";
 import { useWalletConnect } from "./WalletConnect";
+import { Button, Header, Icon } from "react-native-elements";
+// import { SafeAreaProvider } from "react-native-safe-area-context";
+
 import Moralis from "moralis/types";
 
 const styles = StyleSheet.create({
-  center: { alignItems: "center", justifyContent: "center" },
+  center: { alignItems: "center", justifyContent: "center", flex: 1 },
+  topCenter: { alignItems: "center" },
+
   white: { backgroundColor: "white" },
   margin: { marginBottom: 20 },
   marginLarge: { marginBottom: 35 },
@@ -75,35 +80,62 @@ function App(): JSX.Element {
   } = useMoralis();
 
   return (
-    <View style={[StyleSheet.absoluteFill, styles.center, styles.white]}>
-      <View style={styles.marginLarge}>
-        {authError && (
-          <>
-            <Text>Authentication error:</Text>
-            <Text style={styles.margin}>{authError.message}</Text>
-          </>
-        )}
-        {isAuthenticating && (
-          <Text style={styles.margin}>Authenticating...</Text>
-        )}
-        {!isAuthenticated && (
-          // @ts-ignore
-          <TouchableOpacity onPress={() => authenticate({ connector })}>
-            <Text>Authenticate</Text>
-          </TouchableOpacity>
-        )}
+    <View style={[StyleSheet.absoluteFill, styles.white]}>
+      <View>
+        <Header
+          backgroundImageStyle={{}}
+          barStyle="default"
+          centerComponent={{
+            text: "My Awesome DAPP",
+            style: { color: "#fff" },
+          }}
+          centerContainerStyle={{}}
+          containerStyle={{}}
+          leftComponent={{ icon: "menu", color: "#fff" }}
+          leftContainerStyle={{}}
+          placement="center"
+          rightComponent={{ icon: "home", color: "#fff" }}
+          rightContainerStyle={{}}
+          statusBarProps={{}}
+        />
+      </View>
+      <View style={[styles.white, styles.center]}>
+        <View style={styles.marginLarge}>
+          {authError && (
+            <>
+              <Text>Authentication error:</Text>
+              <Text style={styles.margin}>{authError.message}</Text>
+            </>
+          )}
+          {isAuthenticating && (
+            <Text style={styles.margin}>Authenticating...</Text>
+          )}
+          {!isAuthenticated && (
+            // @ts-ignore
+            <Button
+              buttonStyle={{ width: 200, backgroundColor: "green" }}
+              containerStyle={{ margin: 5 }}
+              disabledStyle={{
+                borderWidth: 2,
+                borderColor: "#00F",
+              }}
+              onPress={() => authenticate({ connector })}
+              loadingProps={{ animating: true }}
+              title="Authenticate With Crypto Wallet"></Button>
+          )}
+          {isAuthenticated && (
+            <TouchableOpacity onPress={() => logout()}>
+              <Text>Logout</Text>
+            </TouchableOpacity>
+          )}
+        </View>
         {isAuthenticated && (
-          <TouchableOpacity onPress={() => logout()}>
-            <Text>Logout</Text>
-          </TouchableOpacity>
+          <View>
+            <UserExample />
+            <Web3ApiExample />
+          </View>
         )}
       </View>
-      {isAuthenticated && (
-        <View>
-          <UserExample />
-          <Web3ApiExample />
-        </View>
-      )}
     </View>
   );
 }

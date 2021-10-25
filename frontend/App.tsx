@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   white: { backgroundColor: "white" },
   margin: { marginBottom: 20 },
   marginLarge: { marginBottom: 35 },
-  weightHeavey: { fontWeight: "700" },
+  weightHeavey: { fontWeight: "700", fontSize: 20 },
 });
 
 function Web3ApiExample(): JSX.Element {
@@ -51,7 +51,7 @@ function Web3ApiExample(): JSX.Element {
     <View style={styles.marginLarge}>
       <Text style={styles.weightHeavey}>Native balance</Text>
 
-      <Text>
+      <Text style={styles.weightHeavey}>
         {/* @ts-ignore */}
         {data ? data.balance / ("1e" + "18") : "none"}
       </Text>
@@ -68,7 +68,7 @@ function UserExample(): JSX.Element {
       <Text style={styles.weightHeavey}>
         User Email: {user.getEmail() ?? "-"}
       </Text>
-      <Text style={styles.weightHeavey}>
+      <Text numberOfLines={1} ellipsizeMode="tail" style={styles.weightHeavey}>
         User Address: {user.get("ethAddress")}
       </Text>
     </View>

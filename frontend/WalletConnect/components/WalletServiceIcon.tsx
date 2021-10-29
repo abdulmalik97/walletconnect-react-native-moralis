@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   icon: { borderRadius: 15 },
   noOverflow: { overflow: "hidden" },
   title: {
-    color: "white",
+    color: "grey",
     fontSize: 12,
     fontWeight: "500",
     textAlign: "center",

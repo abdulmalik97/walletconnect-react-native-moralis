@@ -34,7 +34,7 @@ const defaultState: State = Object.freeze({
 
 export default function WalletConnectProvider({
   children,
-  renderQrcodeModal: maybeRenderQrcodeModal,
+  renderQrcodeModal: maybeRenderQrcodeModal, //scannable QR code
   ...extras
 }: Partial<WalletConnectProviderProps>): JSX.Element {
   const {

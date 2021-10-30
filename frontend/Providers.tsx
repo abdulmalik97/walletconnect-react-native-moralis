@@ -9,6 +9,7 @@ import WalletConnectProvider, {
 import { Platform } from "react-native";
 import Qrcode from "./Qrcode";
 import { expo } from "../app.json";
+import { MoralisDappProvider } from "./providers/MoralisDappProvider/MoralisDappProvider";
 
 interface ProvidersProps {
   readonly children: JSX.Element;
@@ -55,7 +56,7 @@ export const Providers = ({ children }: ProvidersProps) => {
         appId={appId}
         serverUrl={serverUrl}
         environment={environment}>
-        {children}
+        <MoralisDappProvider>{children}</MoralisDappProvider>
       </MoralisProvider>
     </WalletConnectProvider>
   );

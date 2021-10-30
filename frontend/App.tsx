@@ -13,6 +13,16 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import SplashScreen from "./Components/SplashScreen";
 import CryptoAuth from "./Components/CryptoAuth";
+import RecentTransactions from "./Components/RecentTransactions/RecentTransactions";
+import Assets from "./Components/Assets/Assets";
+
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import {
+  faCreditCard,
+  faCoins,
+  faUser,
+  faPaperPlane,
+} from "@fortawesome/free-solid-svg-icons";
 
 import Moralis from "moralis/types";
 
@@ -86,8 +96,46 @@ function Test2(): JSX.Element {
 function Home(): JSX.Element {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Home" component={Test} />
-      <Tab.Screen name="Settings" component={Test2} />
+      <Tab.Screen
+        name="Recent Tx"
+        options={{
+          tabBarLabel: "Transactions",
+          tabBarIcon: ({ color }) => (
+            <FontAwesomeIcon icon={faCreditCard} color={color} size={20} />
+          ),
+        }}
+        component={RecentTransactions}
+      />
+      <Tab.Screen
+        name="Transfer"
+        options={{
+          tabBarLabel: "Transfer",
+          tabBarIcon: ({ color }) => (
+            <FontAwesomeIcon icon={faPaperPlane} color={color} size={20} />
+          ),
+        }}
+        component={Test2}
+      />
+      <Tab.Screen
+        name="Assets"
+        options={{
+          tabBarLabel: "Assets",
+          tabBarIcon: ({ color }) => (
+            <FontAwesomeIcon icon={faCoins} color={color} size={20} />
+          ),
+        }}
+        component={Assets}
+      />
+      <Tab.Screen
+        name="Profile"
+        options={{
+          tabBarLabel: "Profile",
+          tabBarIcon: ({ color }) => (
+            <FontAwesomeIcon icon={faUser} color={color} size={20} />
+          ),
+        }}
+        component={Test2}
+      />
 
       {/* <View style={[StyleSheet.absoluteFill, styles.white]}>
       <BottomNavigation />
@@ -210,7 +258,7 @@ function App(): JSX.Element {
           name="DrawerNavigationRoutes"
           component={Home}
           // Hiding header for Navigation Drawer
-          options={{ headerShown: false }}
+          options={{ headerShown: true }}
         />
       </Stack.Navigator>
     </NavigationContainer>

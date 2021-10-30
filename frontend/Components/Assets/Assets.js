@@ -11,6 +11,7 @@ import {
   Image,
 } from "react-native";
 import { Divider } from "react-native-paper";
+import NativeBalance from "./NativeBalance";
 
 const styles = StyleSheet.create({
   container: {
@@ -96,11 +97,16 @@ export default function Assets() {
 
   return (
     <SafeAreaView style={[StyleSheet.absoluteFill, styles.container]}>
-      <FlatList
-        data={assets}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
-      />
+      <View style={{ flex: 1 }}>
+        <NativeBalance />
+      </View>
+      <View style={{ flex: 10 }}>
+        <FlatList
+          data={assets}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </View>
     </SafeAreaView>
 
     // <div style={styles.content}>

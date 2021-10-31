@@ -131,12 +131,16 @@ const styles = StyleSheet.create({
   inputView: {
     borderColor: "grey",
     borderRadius: 15,
-    borderWidth: 1,
+    borderWidth: 0.5,
     justifyContent: "space-around",
     // shadowOffset: "5",
     elevation: 10,
     marginTop: 10,
     padding: 20,
+    shadowColor: "grey",
+    // shadowOffset: { width: 0, height: 3 },
+    // shadowOpacity: 0.2,
+    // shadowRadius: 10,
   },
   scrollView: {
     backgroundColor: "white",

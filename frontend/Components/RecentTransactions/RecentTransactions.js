@@ -7,91 +7,53 @@ import {
   View,
   FlatList,
   StatusBar,
+  Image,
 } from "react-native";
 import { getEllipsisTxt } from "../../utils/formatters";
 import useERC20Transfers from "./hooks/useERC20Transfers";
-import { List } from "react-native-paper";
+import { faWallet } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { List, Divider } from "react-native-paper";
 
-const Item = ({ title }) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
+const Item = ({ address, Moralis, value, logo }) => (
+  <View style={styles.itemContainer}>
+    <View style={styles.itemView}>
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <FontAwesomeIcon icon={faWallet} color="grey" size={20} />
+      </View>
+      <View style={{ flex: 3, justifyContent: "center" }}>
+        <Text style={styles.text}>{getEllipsisTxt(address, 7)}</Text>
+      </View>
+
+      <View
+        style={{ flex: 1, justifyContent: "center", alignItems: "flex-end" }}>
+        <Text style={styles.text}>{Moralis.Units.FromWei(value, 18)}</Text>
+      </View>
+    </View>
+    <Divider />
   </View>
 );
 
 function RecentTransactions() {
   const { ERC20Transfers } = useERC20Transfers();
   const { Moralis } = useMoralis();
-  //   console.log(ERC20Transfers[0]);
+  console.log(ERC20Transfers ? ERC20Transfers[0] : "");
 
   const renderItem = ({ item }) => {
-    return <Item title={item.address} />;
+    return <Item address={item.address} Moralis={Moralis} value={item.value} />;
   };
 
   return (
-    <SafeAreaView style={[StyleSheet.absoluteFill, styles.container]}>
-      {/* <List.AccordionGroup>
-        <List.Accordion title="ERC20 Transfers" id="1"> */}
-      {/* {!ERC20Transfers
-            ? ""
-            : ERC20Transfers.map((item, key) => (
-                <List.item title="hi" key={key}>
-                    
-                  <td>{getEllipsisTxt(item.from_address, 5)}</td>
-                    <td>{getEllipsisTxt(item.to_address, 5)}</td>
-                    <td>{parseFloat(Moralis.Units.FromWei(item.value).toFixed(6))}</td>
-                    <td>{item.block_number}</td>
-                </List.item>
-              ))} */}
-      {/* 
-          <List.Item title="Item 1" />
-          <List.Item title="Item 12" />
-        </List.Accordion> */}
+    <SafeAreaView style={styles.flex1}>
+      <View style={styles.container}>
+        <Text style={styles.subheader}>Confimed Transactions</Text>
 
-      <FlatList
-        data={ERC20Transfers}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
-      />
-      {/* <List.Accordion title="Accordion 2" id="2">
-      <List.Item title="Item 2" />
-    </List.Accordion>
-    <View>
-      <Text>
-        List.Accordion can be wrapped because implementation uses React.Context.
-      </Text>
-      <List.Accordion title="Accordion 3" id="3">
-        <List.Item title="Item 3" />
-      </List.Accordion>
-    </View> */}
-      {/* </List.AccordionGroup> */}
-
-      {/* <h1 style={styles.title}>ERC20 Transfers</h1>
-      <div style={styles.card}>
-        <table style={styles.table}>
-          <thead>
-            <tr>
-              <th>Token</th>
-              <th>From</th>
-              <th>To</th>
-              <th>Value</th>
-              <th>Block Number</th>
-            </tr>
-          </thead>
-          <tbody>
-            {!ERC20Transfers
-              ? null
-              : ERC20Transfers.map((item, key) => (
-                  <tr key={key}>
-                    <td>{getEllipsisTxt(item.address, 5)}</td>
-                    <td>{getEllipsisTxt(item.from_address, 5)}</td>
-                    <td>{getEllipsisTxt(item.to_address, 5)}</td>
-                    <td>{parseFloat(Moralis.Units.FromWei(item.value).toFixed(6))}</td>
-                    <td>{item.block_number}</td>
-                  </tr>
-                ))}
-          </tbody>
-        </table>
-      </div> */}
+        <FlatList
+          data={ERC20Transfers}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </View>
     </SafeAreaView>
   );
 }
@@ -102,6 +64,9 @@ const styles = StyleSheet.create({
     // alignItems: "center",
     justifyContent: "center",
     // backgroundColor: "red",
+    paddingTop: 20,
+    marginTop: 20,
+    paddingHorizontal: 10,
 
     marginTop: StatusBar.currentHeight || 0,
 
@@ -116,6 +81,25 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 16,
   },
+  itemContainer: {
+    flex: 1,
+    flexDirection: "column",
+    backgroundColor: "white",
+  },
+  itemView: {
+    backgroundColor: "white",
+    padding: 20,
+    // marginVertical: 8,
+    marginHorizontal: 2,
+    flex: 1,
+    flexDirection: "row",
+  },
+  subheader: {
+    fontSize: 15,
+    fontWeight: "500",
+    color: "grey",
+    paddingBottom: 10,
+  },
   activityIndicator: {
     alignItems: "center",
     height: 80,
@@ -123,6 +107,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 10,
     color: "black",
+  },
+  text: {
+    fontSize: 15,
+    color: "black",
+    fontWeight: "500",
+  },
+  flex1: {
+    flex: 1,
   },
 });
 

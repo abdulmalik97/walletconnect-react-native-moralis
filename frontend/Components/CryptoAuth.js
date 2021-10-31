@@ -9,6 +9,7 @@ import {
   Keyboard,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Linking,
 } from "react-native";
 import { Button } from "react-native-paper";
 import {
@@ -110,8 +111,10 @@ const LoginScreen = ({ navigation }) => {
             </TouchableOpacity>
             <Text
               style={styles.registerTextStyle}
-              onPress={() => navigation.navigate("RegisterScreen")}>
-              New Here ? Register
+              onPress={() =>
+                Linking.openURL("https://ethereum.org/en/wallets/")
+              }>
+              What are wallets?
             </Text>
           </KeyboardAvoidingView>
         </View>

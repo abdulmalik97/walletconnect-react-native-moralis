@@ -28,6 +28,7 @@ Moralis.setAsyncStorage(AsyncStorage);
 // Replace the enable function to use the react-native WalletConnect
 // @ts-ignore
 Moralis.enable = enableViaWalletConnect;
+console.log(AsyncStorage.getAllKeys(), "KEYS");
 
 const walletConnectOptions: WalletConnectProviderProps = {
   redirectUrl: Platform.OS === "web" ? window.location.origin : `${scheme}://`,
@@ -46,7 +47,7 @@ const walletConnectOptions: WalletConnectProviderProps = {
     ],
   },
   // Uncomment to show a QR-code to connect a wallet
-  renderQrcodeModal: Qrcode,
+  // renderQrcodeModal: Qrcode,
 };
 
 export const Providers = ({ children }: ProvidersProps) => {

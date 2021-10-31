@@ -15,6 +15,7 @@ import CryptoAuth from "./Components/CryptoAuth";
 import RecentTransactions from "./Components/RecentTransactions/RecentTransactions";
 import Assets from "./Components/Assets/Assets";
 import Transfer from "./Components/Transfer/Transfer";
+import Profile from "./Components/Profile/Profile";
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
@@ -29,10 +30,8 @@ import Moralis from "moralis/types";
 const styles = StyleSheet.create({
   center: { alignItems: "center", justifyContent: "center", flex: 1 },
   topCenter: { alignItems: "center" },
-
   blue: { backgroundColor: "blue" },
   red: { backgroundColor: "red" },
-
   margin: { marginBottom: 20 },
   marginLarge: { marginBottom: 35 },
   weightHeavey: { fontWeight: "700", fontSize: 20 },
@@ -77,22 +76,6 @@ function Web3ApiExample(): JSX.Element {
   );
 }
 
-function Test(): JSX.Element {
-  return (
-    <View style={[StyleSheet.absoluteFill, styles.blue]}>
-      <Text>GJDSFJGDFJGDF</Text>
-    </View>
-  );
-}
-
-function Test2(): JSX.Element {
-  return (
-    <View style={[StyleSheet.absoluteFill, styles.red]}>
-      <Text>GJDSFJfdsfdsfsdfGDFJGDF</Text>
-    </View>
-  );
-}
-
 function Home(): JSX.Element {
   return (
     <Tab.Navigator
@@ -107,7 +90,6 @@ function Home(): JSX.Element {
           tabBarIcon: ({ color }) => (
             <FontAwesomeIcon icon={faCreditCard} color={color} size={20} />
           ),
-          title: "Ho",
         }}
         component={RecentTransactions}
       />
@@ -128,7 +110,6 @@ function Home(): JSX.Element {
           tabBarIcon: ({ color }) => (
             <FontAwesomeIcon icon={faCoins} color={color} size={20} />
           ),
-          title: "Assets",
         }}
         component={Assets}
       />
@@ -140,25 +121,9 @@ function Home(): JSX.Element {
             <FontAwesomeIcon icon={faUser} color={color} size={20} />
           ),
         }}
-        component={Test2}
+        component={Profile}
       />
     </Tab.Navigator>
-  );
-}
-
-function UserExample(): JSX.Element {
-  const { user } = useMoralis();
-
-  return (
-    <View style={styles.marginLarge}>
-      <Text style={styles.weightHeavey}>UserName: {user.getUsername()}</Text>
-      <Text style={styles.weightHeavey}>
-        User Email: {user.getEmail() ?? "-"}
-      </Text>
-      <Text numberOfLines={1} ellipsizeMode="tail" style={styles.weightHeavey}>
-        User Address: {user.get("ethAddress")}
-      </Text>
-    </View>
   );
 }
 

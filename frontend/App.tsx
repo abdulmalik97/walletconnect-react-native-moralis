@@ -6,7 +6,6 @@ import {
   useMoralisWeb3ApiCall,
 } from "react-moralis";
 import { useWalletConnect } from "./WalletConnect";
-import BottomNavigation from "./Components/BottomNavigation";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -15,6 +14,7 @@ import SplashScreen from "./Components/SplashScreen";
 import CryptoAuth from "./Components/CryptoAuth";
 import RecentTransactions from "./Components/RecentTransactions/RecentTransactions";
 import Assets from "./Components/Assets/Assets";
+import Transfer from "./Components/Transfer/Transfer";
 
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
@@ -95,7 +95,11 @@ function Test2(): JSX.Element {
 
 function Home(): JSX.Element {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      shifting={false}
+      // activeColor="#f0edf6"
+      // inactiveColor="#3e2465"
+      barStyle={{ backgroundColor: "white" }}>
       <Tab.Screen
         name="Recent Tx"
         options={{
@@ -103,6 +107,7 @@ function Home(): JSX.Element {
           tabBarIcon: ({ color }) => (
             <FontAwesomeIcon icon={faCreditCard} color={color} size={20} />
           ),
+          title: "Ho",
         }}
         component={RecentTransactions}
       />
@@ -114,7 +119,7 @@ function Home(): JSX.Element {
             <FontAwesomeIcon icon={faPaperPlane} color={color} size={20} />
           ),
         }}
-        component={Test2}
+        component={Transfer}
       />
       <Tab.Screen
         name="Assets"
@@ -123,6 +128,7 @@ function Home(): JSX.Element {
           tabBarIcon: ({ color }) => (
             <FontAwesomeIcon icon={faCoins} color={color} size={20} />
           ),
+          title: "Assets",
         }}
         component={Assets}
       />
@@ -136,73 +142,6 @@ function Home(): JSX.Element {
         }}
         component={Test2}
       />
-
-      {/* <View style={[StyleSheet.absoluteFill, styles.white]}>
-      <BottomNavigation />
-
-      <View>
-        <Header
-          backgroundImageStyle={{}}
-          barStyle="default"
-          centerComponent={{
-            text: "My Awesome DAPP",
-            style: { color: "#fff" },
-          }}
-          centerContainerStyle={{}}
-          containerStyle={{}}
-          leftComponent={{ icon: "menu", color: "#fff" }}
-          leftContainerStyle={{}}
-          placement="center"
-          rightComponent={{ icon: "home", color: "#fff" }}
-          rightContainerStyle={{}}
-          statusBarProps={{}}
-        />
-      </View>
-      <View style={[styles.white, styles.center]}>
-        <View style={styles.marginLarge}>
-          {authError && (
-            <>
-              <Text>Authentication error:</Text>
-              <Text style={styles.margin}>{authError.message}</Text>
-            </>
-          )}
-          {isAuthenticating && (
-            <Text style={styles.margin}>Authenticating...</Text>
-          )}
-          {!isAuthenticated && (
-            <Button
-              buttonStyle={{ width: 200, backgroundColor: "green" }}
-              containerStyle={{ margin: 5 }}
-              disabledStyle={{
-                borderWidth: 2,
-                borderColor: "#00F",
-              }}
-              onPress={() => authenticate({ connector })}
-              loadingProps={{ animating: true }}
-              title="Authenticate With Crypto Wallet"></Button>
-          )}
-          {isAuthenticated && (
-            <>
-              <Button
-                buttonStyle={{ width: 200, backgroundColor: "red" }}
-                containerStyle={{ margin: 5 }}
-                disabledStyle={{
-                  borderWidth: 2,
-                  borderColor: "#00F",
-                }}
-                onPress={() => logout()}
-                title="Logout"></Button>
-            </>
-          )}
-        </View>
-        {isAuthenticated && (
-          <View>
-            <UserExample />
-            <Web3ApiExample />
-          </View>
-        )}
-      </View>
-    </View> */}
     </Tab.Navigator>
   );
 }
@@ -258,7 +197,7 @@ function App(): JSX.Element {
           name="DrawerNavigationRoutes"
           component={Home}
           // Hiding header for Navigation Drawer
-          options={{ headerShown: true }}
+          options={{ headerShown: true, title: "Assets" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

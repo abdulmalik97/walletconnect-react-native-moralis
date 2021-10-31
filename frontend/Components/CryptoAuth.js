@@ -11,7 +11,15 @@ import {
   KeyboardAvoidingView,
   Linking,
 } from "react-native";
-import { Button } from "react-native-paper";
+import {
+  Button,
+  Paragraph,
+  Dialog,
+  Portal,
+  Provider,
+  ActivityIndicator,
+} from "react-native-paper";
+
 import {
   useMoralis,
   useMoralisWeb3Api,
@@ -38,6 +46,11 @@ const LoginScreen = ({ navigation }) => {
   const [userPassword, setUserPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errortext, setErrortext] = useState("");
+  const [visible, setVisible] = React.useState(false);
+
+  const showDialog = () => setVisible(true);
+
+  const hideDialog = () => setVisible(false);
 
   const passwordInputRef = createRef();
 
@@ -46,6 +59,7 @@ const LoginScreen = ({ navigation }) => {
       .then(() => {
         if (authError) {
           setErrortext(authError.message);
+          setVisible(true);
         } else {
           if (isAuthenticated) {
             navigation.replace("DrawerNavigationRoutes");
@@ -56,40 +70,49 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.mainBody}>
-      {/* <Loader loading={loading} /> */}
-      <ScrollView
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{
-          flex: 1,
-          justifyContent: "center",
-          alignContent: "center",
-        }}>
-        <View>
-          <KeyboardAvoidingView enabled>
-            <View style={{ alignItems: "center" }}>
-              <Image
-                source={require("../moralis-logo.png")}
-                style={{
-                  width: "50%",
-                  height: 100,
-                  resizeMode: "contain",
-                  margin: 30,
-                }}
-              />
-            </View>
+    <Provider>
+      <View style={styles.mainBody}>
+        {/* <Loader loading={loading} /> */}
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={{
+            flex: 1,
+            justifyContent: "center",
+            alignContent: "center",
+          }}>
+          <View>
+            <KeyboardAvoidingView enabled>
+              <View style={{ alignItems: "center" }}>
+                <Image
+                  source={require("../moralis-logo.png")}
+                  style={{
+                    width: "50%",
+                    height: 100,
+                    resizeMode: "contain",
+                    margin: 30,
+                  }}
+                />
+              </View>
 
-            <View style={styles.marginLarge}>
-              {authError && (
-                <>
-                  <Text>Authentication error:</Text>
-                  <Text style={styles.margin}>{authError.message}</Text>
-                </>
-              )}
-              {isAuthenticating && (
-                <Text style={styles.margin}>Authenticating...</Text>
-              )}
-              {!isAuthenticated && (
+              <View style={styles.marginLarge}>
+                {authError && (
+                  <Portal>
+                    <Dialog visible={visible} onDismiss={hideDialog}>
+                      <Dialog.Title>Authentication error:</Dialog.Title>
+                      <Dialog.Content>
+                        <Paragraph>
+                          {authError ? authError.message : ""}
+                        </Paragraph>
+                      </Dialog.Content>
+                      <Dialog.Actions>
+                        <Button onPress={hideDialog}>Done</Button>
+                      </Dialog.Actions>
+                    </Dialog>
+                  </Portal>
+                )}
+                {isAuthenticating && (
+                  <ActivityIndicator animating={true} color={"white"} />
+                )}
                 <Button
                   buttonStyle={{ width: 200, backgroundColor: "green" }}
                   containerStyle={{ margin: 5 }}
@@ -99,27 +122,28 @@ const LoginScreen = ({ navigation }) => {
                   }}
                   onPress={() => authenticate({ connector })}
                   loadingProps={{ animating: true }}
+                  loading={isAuthenticating}
                   title="Authenticate With Crypto Wallet"></Button>
-              )}
-            </View>
+              </View>
 
-            <TouchableOpacity
-              style={styles.buttonStyle}
-              activeOpacity={0.5}
-              onPress={handleCryptoLogin}>
-              <Text style={styles.buttonTextStyle}>Crypto Wallet Login</Text>
-            </TouchableOpacity>
-            <Text
-              style={styles.registerTextStyle}
-              onPress={() =>
-                Linking.openURL("https://ethereum.org/en/wallets/")
-              }>
-              What are wallets?
-            </Text>
-          </KeyboardAvoidingView>
-        </View>
-      </ScrollView>
-    </View>
+              <TouchableOpacity
+                style={styles.buttonStyle}
+                activeOpacity={0.5}
+                onPress={handleCryptoLogin}>
+                <Text style={styles.buttonTextStyle}>Crypto Wallet Login</Text>
+              </TouchableOpacity>
+              <Text
+                style={styles.registerTextStyle}
+                onPress={() =>
+                  Linking.openURL("https://ethereum.org/en/wallets/")
+                }>
+                What are wallets?
+              </Text>
+            </KeyboardAvoidingView>
+          </View>
+        </ScrollView>
+      </View>
+    </Provider>
   );
 };
 export default LoginScreen;
